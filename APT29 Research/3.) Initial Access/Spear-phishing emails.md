@@ -1,19 +1,20 @@
 
-### **Conclusions so far, prone to updates when I have more info**
-
-- APT29 uses either personally crafted phishing emails, originating from trusted or long-term domains to look more secure and legit, the contents inside the emails are either - direct .lnk downloads or embedded macros in documents, all of this is to somehow deliver their malware PowerDuke\PolygotDuke\RegDuke backdoor to the compromised system in order to initiate a connection to their C2 server.
-
 ### **Intro**
-The group’s main initial tactic to breach a network is to send spear-phishing emails that contain a link or an attachment. In order to increase the attackers’ chances, it is designed to be a subject of particular interest of the recipient. These spear phishing messages were spoofed and made to appear to have been sent from real individuals at well-known think tanks in the United States and Europe.
+The group’s main initial tactic to breach a network is to send spear-phishing emails that contain a `.lnk` or macro-embedded documents. In order to increase the attackers’ chances, it is designed to be a subject of particular interest of the recipient. These spear phishing messages were spoofed and made to appear to have been sent from real individuals at well-known think tanks in the United States and Europe.
 
-### **For Analysis**
-The Dukes are known for launching their attacks by sending links to ZIP files, that contain malicious executables, hosted on legitimate compromised web servers. However, each of the e-mail messages from the August attacks contained a Microsoft Office Word (.doc) or Excel (.xls) attachment. These attachments, when viewed, contained legitimate report content from each of the organizations they appeared to have been sent from. However, the attackers inserted macros into the documents designed to install a malware downloader on the system. Successful exploitation would result in the download of a PNG image file from a compromised webserver. These attack campaigns leveraged steganography in the PNG files by hiding components of a backdoor that would exist only in memory after being loaded into rundll32.exe. Volexity has dubbed this backdoor **PowerDuke**. Similar attack campaigns using documents with macros dropping PowerDuke were further observed through October, where Universities, and not think tanks appear to have been the primary targets. Details of these attacks have been provided to Volexity customers. Concerned NGO’s and Universities that may have been targeted by these attacks campaigns are welcome to reach out for additional details.
+#### Sender infrastructure — building legitimacy before the email arrives
 
-**Personal Comments and Thoughts**
-- So basically the initial process of compromise contained stagers/stages as seen with PowerDuke which is an embedded macro in a document used for setting the first stage of the compromise - investigate further what PowerDuke is doing, and how it works, also keep in my different stages of the attack.
-- There were also time when they just point links to files hosted on web servers, other times they have macro embedded - investigate how this is done via examples below
-- Also how do they get info on the target about what exactly to send as a phishing mail
+Before a single spear-phishing email was sent, APT29 invested in sender infrastructure designed to pass both technical email validation and human scrutiny. The domains used as sending addresses were constructed to appear affiliated with legitimate organizations the targets would recognize.
 
+Across the 2016 campaigns documented by Volexity, APT29 registered and operated domains following a consistent pattern — combining legitimate-sounding service names with common organizational suffixes. Examples observed include `pfdweek[.]com`, `pfdresearch[.]org`, and `pfdregistry[.]net`. These domains were designed to evoke legitimate institutional or technology services rather than directly impersonate a specific organization, which would risk immediate recognition. In some cases the domains redirected to legitimate websites with similar names — a technique that provided cover when investigators followed the link directly, making the infrastructure appear less suspicious.
+
+The sending accounts observed across campaigns used free email providers — `industry.faxsolution@gmail.com` and `securefaxsolution@gmail.com` — in cases where the attack was framed as a fax or document delivery service rather than direct institutional correspondence. This approach avoided the technical overhead of maintaining domain-based email infrastructure for every campaign while still providing a plausible sender identity consistent with the email's content.
+
+
+The steps are as follow:
+1.) Domain registration and sender account creation happened before the phishing email was written
+2.) Recon identified the target and determined what would be credible to them
+3.) Infrastructure was built to match that determination. 
 
 ### **Example Attack With File Download**
 
